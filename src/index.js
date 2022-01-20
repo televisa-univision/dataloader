@@ -232,17 +232,12 @@ class DataLoader<K, V, C = K> {
 var enqueuePostPromiseJob =
   typeof process === 'object' && typeof process.nextTick === 'function' ?
     function (fn) {
-      if (!resolvedPromise) {
-        resolvedPromise = Promise.resolve();
-      }
+      var resolvedPromise = Promise.resolve();
       resolvedPromise.then(() => {
         process.nextTick(fn);
       });
     } :
     setImmediate || setTimeout;
-
-// Private: cached resolved Promise instance
-var resolvedPromise;
 
 // Private: Describes a batch of requests
 type Batch<K, V> = {
